@@ -1,4 +1,5 @@
 const fs = require('fs');
+const config = require('./config');
 
 
 class Get_folowers_list {
@@ -10,17 +11,19 @@ class Get_folowers_list {
     async goToFollowers() {
         const {page} = this;
 
-        await page.goto('https://www.instagram.com/_miss_maleficient_/'); // who's followers to get
-        let followers_btn = await page.$("a[href$='/_miss_maleficient_/followers/']");
+        await page.goto(`https://www.instagram.com/${config.USER_TO_SCRAPE}/`); // who's followers to get
+        let followers_btn = await page.$(`a[href$='/${config.USER_TO_SCRAPE}/followers/']`);
         await followers_btn.click();
     };
 
     /* This function is injected into the page and used to scrape items from it. */
 
     extractItems() {
+
         return () => {
-            let followersModal = window.document.getElementsByClassName('_gs38e')[0];
-            const extractedElements = followersModal.querySelectorAll('._gs38e a._2g7d5');
+            const followersModalClassName = "isgrP";
+            let followersModal = window.document.getElementsByClassName(followersModalClassName)[0];
+            const extractedElements = followersModal.querySelectorAll(`.${followersModalClassName} li div div div div a`);
 
             const items = [];
             for (let element of extractedElements) {
@@ -36,20 +39,21 @@ class Get_folowers_list {
      * @param {number} itemTargetConut - The target number of items to extract before stopping.
      * @param {number} scrollDelay - The time (in milliseconds) to wait between scrolls.
      */
-    async scrapeInfiniteScrollItems(itemTargetCount, scrollDelay = 100) {
-
+    async scrapeInfiniteScrollItems(followersCount, scrollDelay = 100) {
 
         const {page} = this;
 
         let items = [];
 
         try {
+            const followersModalClassName = "isgrP";
             let previousHeight;
-            while (items.length < itemTargetCount) {
+            while (items.length < followersCount) {
                 items = await page.evaluate(this.extractItems());
-                previousHeight = await page.evaluate('window.document.getElementsByClassName(\'_gs38e\')[0].scrollHeight');
-                await page.evaluate('window.document.getElementsByClassName(\'_gs38e\')[0].scrollTop += 1000;');
-                await page.waitForFunction(`window.document.getElementsByClassName('_gs38e')[0].scrollHeight > ${previousHeight}`);
+
+                previousHeight = await page.evaluate(`window.document.getElementsByClassName(\'${followersModalClassName}\')[0].scrollHeight`);
+                await page.evaluate(`window.document.getElementsByClassName(\'${followersModalClassName}\')[0].scrollTop += 1000;`);
+                await page.waitForFunction(`window.document.getElementsByClassName(\'${followersModalClassName}\')[0].scrollHeight > ${previousHeight}`);
                 await page.waitFor(scrollDelay);
             }
         } catch (err) {
@@ -66,7 +70,7 @@ class Get_folowers_list {
         this.utils.sleep(2);
 
         //*** Scroll and extract items from the page.
-        const users = await this.scrapeInfiniteScrollItems(900); //number of followers for get
+        const users = await this.scrapeInfiniteScrollItems(config.NUMBER_OF_FOLLOWERS_TO_SCRAPE);
 
         //*** Save extracted items to a file.
         fs.writeFileSync('./users-all.txt', users.join('\n') + '\n');

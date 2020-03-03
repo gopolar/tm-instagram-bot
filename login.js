@@ -1,3 +1,5 @@
+const config = require('./config');
+
 class Login {
     constructor(page) {
         this.page = page;
@@ -11,13 +13,13 @@ class Login {
 
         /* Set username and password */
         await page.waitForSelector('input[name="username"]');
-        await page.type('input[name="username"]', "username-here", {delay: 10});
+        await page.type('input[name="username"]', config.USER, {delay: 7});
         await page.waitForSelector('input[name="password"]');
-        await page.type('input[name="password"]', "password-here", {delay: 10});
+        await page.type('input[name="password"]', config.PASS, {delay: 7});
 
         /* Press submit button */
-        await page.waitForSelector('form button');
-        let button = await page.$('form button');
+        await page.waitForSelector('form button[type="submit"]');
+        let button = await page.$('form button[type="submit"]');
         await button.click();
         await page.waitForNavigation(); //waits for page to load
         console.log('Logged in'.rainbow);

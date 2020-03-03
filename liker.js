@@ -17,7 +17,7 @@ class Liker {
         /* This function is injected into the page and used to scrape items from it. */
         let extractItems = () => {
             let img_urls = []; //array of img urls TODO: REMOVE LINE???
-            let elements = window.document.querySelectorAll('article ._havey a');
+            let elements = window.document.querySelectorAll('article a');
             elements.forEach((element) => img_urls.push(element.href)); //add img url to the array
             return img_urls;
         };
@@ -57,10 +57,10 @@ class Liker {
             await page.goto(img_urls[current]);
 
             try {
-                let heart = await this.page.$('.coreSpriteHeartOpen');
+                let heart = await this.page.$('svg[aria-label="Like"]');
 
                 if (heart == null) {
-                    console.log('LOG This pic is already liked!'.yellow);
+                    console.log('LOG image is already liked!'.yellow);
                 } else {
                     try {
                         await this.utils.sleep(this.utils.random_interval(1, 3));

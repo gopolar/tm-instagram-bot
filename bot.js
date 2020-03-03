@@ -20,16 +20,16 @@ const puppeteer = require('puppeteer');
     await login.init();
 
     //*** 2FA
-    await utils.sleep(25);
+    // await utils.sleep(25);
     // await twofa.init();
 
-
     //*** Start get_folowers_list
-    // await getFolowersList.init();
+    await getFolowersList.init();
 
     //*** Liker
     await liker.init();
 
     //*** Close the browser.
-    await browser.close(); console.log('LOG browser closed');
+    await browser.close();
+    console.log('LOG browser closed');
 })();
