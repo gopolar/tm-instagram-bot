@@ -63,7 +63,7 @@ class Liker {
                     console.log('LOG image is already liked!'.yellow);
                 } else {
                     try {
-                        await this.utils.sleep(this.utils.random_interval(1, 3));
+                        await this.utils.sleep(this.utils.random_interval(1.5, 3.2));
                         await heart.click();
                         console.log('LOG Liked!'.rainbow);
                     } catch (err) {
@@ -87,7 +87,7 @@ class Liker {
         let img_urls;
 
         //*** loop through users
-        for (let i = 0; i <= users.length; i++) {
+        for (let i = 0; i <= users.length-1; i++) {
             console.log('LOG Current User: '.green, users[i]);
             await this.goToUser(users[i]);
             img_urls = await this.getImgUrls();

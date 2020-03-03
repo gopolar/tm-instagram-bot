@@ -1,9 +1,10 @@
 const puppeteer = require('puppeteer');
+const config = require('./config');
 
 (async () => {
     // Set up browser and page.
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: config.HEADLESS,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
     });
     const page = await browser.newPage();
@@ -24,7 +25,7 @@ const puppeteer = require('puppeteer');
     // await twofa.init();
 
     //*** Start get_folowers_list
-    await getFolowersList.init();
+    // await getFolowersList.init();
 
     //*** Liker
     await liker.init();

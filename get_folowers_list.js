@@ -67,7 +67,7 @@ class Get_folowers_list {
     async init() {
         //*** GoTo users followers
         await this.goToFollowers();
-        this.utils.sleep(2);
+        this.utils.sleep(2.3);
 
         //*** Scroll and extract items from the page.
         const users = await this.scrapeInfiniteScrollItems(config.NUMBER_OF_FOLLOWERS_TO_SCRAPE);
