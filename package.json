@@ -23,7 +23,7 @@
   "dependencies": {
     "colors": "^1.2.1",
     "fs": "0.0.1-security",
-    "puppeteer": "^1.0.0",
+    "puppeteer": "^1.13.0",
     "system-sleep": "^1.3.6"
   }
 }
